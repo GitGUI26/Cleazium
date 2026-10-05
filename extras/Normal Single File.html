@@ -1,0 +1,22 @@
+<script>
+    // Set this to the folder where your Cleazium site is hosted (must end with a slash)
+    const baseUrl   = 'https://YOUR-CLEAZIUM-SITE.example/';
+    const targetUrl = baseUrl + 'index.html';
+
+    fetch(targetUrl)
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.text();
+        })
+        .then(html => {
+            if (!html.includes('<base')) {
+                html = html.replace('<head>', `<head><base href="${baseUrl}">`);
+            }
+            document.open();
+            document.write(html);
+            document.close();
+        })
+        .catch(error => {
+            document.body.innerHTML = `<h3 style="color:#f87171">Failed to load content.</h3><p>${error.message}</p>`;
+        });
+</script>
